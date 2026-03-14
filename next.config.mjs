@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
+  basePath: "/hera-portfolio",
   reactStrictMode: true,
   images: {
-    // Match the artifact behavior (no optimization pipeline required for local assets).
     unoptimized: true
   }
 };
