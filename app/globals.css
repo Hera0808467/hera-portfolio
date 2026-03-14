@@ -1,0 +1,131 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@font-face {
+  font-family: ABC Ginto Nord Variable;
+  src: url("/fonts/ABCGintoNordVariable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Avantt;
+  src: url("/fonts/AvanttTRIALVF-BF6721a86b223dc.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: none contain;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  overscroll-behavior: none contain;
+  touch-action: pan-y;
+  overflow-x: clip;
+}
+
+/* Matches the artifact's vignette layer. */
+.softVignette {
+  filter: blur(80px);
+  pointer-events: none;
+  background: radial-gradient(50% 70% at 50% 60%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%);
+  width: 200vw;
+  height: 80vh;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bodyText {
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 0.01em;
+  line-height: 1.55;
+  position: relative;
+}
+
+.ending-split-title {
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: -0.02em;
+  font-family: Avantt, sans-serif;
+  font-size: clamp(1.5rem, 5vw, 3.5rem);
+  font-weight: 450;
+  line-height: 1.3;
+}
+
+/* Keep this aligned with `reference/_next/static/chunks/d4a63f568a269e47.css`. */
+.circular-text {
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  cursor: pointer;
+  transform-origin: 50%;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  font-family: Avantt, sans-serif;
+  font-weight: 500;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.circular-text__inner {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  animation: circularSpin var(--spin-duration, 20s) linear infinite;
+}
+
+.circular-text:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.circular-text span {
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 8px;
+  transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+  display: inline-block;
+  position: absolute;
+  inset: 0;
+}
+
+@keyframes circularSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* If we ever reuse "ghost cursor" CSS from the artifact. */
+.ghost-cursor {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+.ghost-cursor > canvas {
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
