@@ -273,7 +273,7 @@ export function ShaderBackground({
     rendererRef.current = renderer;
 
     renderer.outputColorSpace = SRGBColorSpace;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setClearColor(new Color(0x000000), transparent ? 0 : 1);
 
     renderer.domElement.style.width = "100%";

@@ -99,29 +99,38 @@ export default function HomePage() {
     const el = rootRef.current;
     if (!el) return;
 
-    const onScroll = () => {
-      const sections = el.querySelectorAll("section");
-      const viewportHeight = window.innerHeight || 1;
+    let rafId: number | null = null;
 
-      let bestIdx = 0;
-      let bestVisible = 0;
-      sections.forEach((section, idx) => {
-        const rect = section.getBoundingClientRect();
-        const visible = Math.max(0, Math.min(viewportHeight, rect.bottom) - Math.max(0, rect.top));
-        if (visible > bestVisible) {
-          bestVisible = visible;
-          bestIdx = idx;
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const sections = el.querySelectorAll("section");
+        const viewportHeight = window.innerHeight || 1;
+
+        let bestIdx = 0;
+        let bestVisible = 0;
+        sections.forEach((section, idx) => {
+          const rect = section.getBoundingClientRect();
+          const visible = Math.max(0, Math.min(viewportHeight, rect.bottom) - Math.max(0, rect.top));
+          if (visible > bestVisible) {
+            bestVisible = visible;
+            bestIdx = idx;
+          }
+        });
+
+        if (bestVisible > 0.5 * viewportHeight) {
+          setActiveSectionIndex(bestIdx);
         }
       });
-
-      if (bestVisible > 0.5 * viewportHeight) {
-        setActiveSectionIndex(bestIdx);
-      }
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   useEffect(() => {

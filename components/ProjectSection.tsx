@@ -103,13 +103,20 @@ export function ProjectSection({ project, index, isActive }: ProjectSectionProps
   const [detailsOpen, setDetailsOpen] = useState(true);
 
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
     const updateScale = () => {
-      const el = containerRef.current;
-      if (!el) return;
       setOverlayScale(Math.min(el.offsetWidth / 1056, 1));
     };
 
     updateScale();
+
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(updateScale);
+      ro.observe(el);
+      return () => ro.disconnect();
+    }
     window.addEventListener("resize", updateScale);
     return () => window.removeEventListener("resize", updateScale);
   }, []);

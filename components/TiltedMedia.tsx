@@ -61,8 +61,7 @@ export function TiltedMedia({
   priority = false,
   isActive = true
 }: TiltedMediaProps) {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  const resolvedImageSrc = imageSrc && imageSrc.startsWith("/") ? `${basePath}${imageSrc}` : imageSrc;
+  const resolvedImageSrc = imageSrc;
   const hint = useMemo(() => getLinkHint(linkUrl), [linkUrl]);
   const isFigmaLink = useMemo(() => (linkUrl ?? "").toLowerCase().includes("figma.com"), [linkUrl]);
   const embedSrc = useMemo(() => extractEmbedSrc(videoUrl), [videoUrl]);

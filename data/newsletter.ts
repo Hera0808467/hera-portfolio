@@ -45,7 +45,7 @@ export const newsletterData: NewsletterData = {
       "contributorType": "designers",
       "contributors": ["Hera"],
       "figmaUrl": "https://www.figma.com/design/r7zfW9LEgDcih55tqLJqls/%E5%96%82%E5%96%82?node-id=0-1&t=DxkYpSEr0EDCNsS7-1",
-      "coverImage": "/images/hera-projects/weiwei.png",
+      "coverImage": "/images/hera-projects/weiwei.webp",
       "description": "「那是食物，不是爱」\n\n🏆 Hackathon最佳产品奖\n\n【洞察】市面方案聚焦「控制」反而加重焦虑，WeiWei重新定位为「陪伴」\n\n【设计】90秒情感陪伴机制，用LLM构建非说教式对话系统，帮用户度过冲动高峰\n\n产品设计+开发 | 2026",
       "group": "Product",
       "themeColor": "#FF6B9D"
@@ -58,7 +58,7 @@ export const newsletterData: NewsletterData = {
       "contributorType": "designers",
       "contributors": ["Hera"],
       "figmaUrl": "https://drift-for-adhd.netlify.app",
-      "coverImage": "/images/hera-projects/drift.png",
+      "coverImage": "/images/hera-projects/drift.webp",
       "description": "缓解时间不知道干什么？捞一个瓶子，帮你开始\n\n【痛点】决策瘫痪导致任务启动困难\n\n【方案】\u201c捞瓶子\u201d随机机制 + 智能推荐，降低选择成本，5分钟也能推进主线\n\n📱 小红书ADHD话题Top3 | 对拖延症和ADHDer友好\n\nSide Project | 产品 + 独立开发 | 2026",
       "group": "Side Project",
       "themeColor": "#8B7FD8"
@@ -71,7 +71,7 @@ export const newsletterData: NewsletterData = {
       "contributorType": "designers",
       "contributors": ["Hera"],
       "figmaUrl": "#",
-      "coverImage": "/images/hera-projects/research_copilot.png",
+      "coverImage": "/images/hera-projects/research_copilot.webp",
       "description": "AI驱动的科研效率系统\n\n🎯 产品能力：三层产品矩阵（情绪激励→执行管理→导师沟通），gamification降低实验启动门槛\n\n💻 AI Native工程：多模态AI能力组合，动态生成组会材料/PPT/沟通话术，准备时间<10分钟\n\n📊 情绪层·加油站 → 执行层·进度管理 → 协作层·AI生成\n\n产品设计 + Claude Code独立开发",
       "group": "Product Design",
       "themeColor": "#7B3FF2"

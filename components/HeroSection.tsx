@@ -24,29 +24,35 @@ function VariableWeightText({
   const mouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    let raf: number | null = null;
+    let dirty = true;
+
     const onMove = (ev: MouseEvent) => {
       mouseRef.current = { x: ev.clientX, y: ev.clientY };
+      dirty = true;
     };
 
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
 
-    let raf: number | null = null;
     const step = () => {
-      for (const span of spansRef.current) {
-        if (!span) continue;
-        const rect = span.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = mouseRef.current.x - cx;
-        const dy = mouseRef.current.y - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dirty) {
+        dirty = false;
+        for (const span of spansRef.current) {
+          if (!span) continue;
+          const rect = span.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = mouseRef.current.x - cx;
+          const dy = mouseRef.current.y - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
 
-        let weight = fromWeight;
-        if (dist < radius) {
-          weight = Math.round(fromWeight + (toWeight - fromWeight) * (1 - dist / radius));
+          let weight = fromWeight;
+          if (dist < radius) {
+            weight = Math.round(fromWeight + (toWeight - fromWeight) * (1 - dist / radius));
+          }
+
+          span.style.fontVariationSettings = `'wght' ${weight}`;
         }
-
-        span.style.fontVariationSettings = `'wght' ${weight}`;
       }
 
       raf = window.requestAnimationFrame(step);
