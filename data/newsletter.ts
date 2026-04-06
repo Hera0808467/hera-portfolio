@@ -44,7 +44,7 @@ export const newsletterData: NewsletterData = {
       "displayTitle": "WeiWei",
       "contributorType": "designers",
       "contributors": ["Hera"],
-      "figmaUrl": "https://www.figma.com/make/W2hmSYCwrO8T6HpXvJgGML/%E7%95%8C%E9%9D%A2%E5%A4%8D%E5%88%BB%E4%B8%8E%E8%B7%B3%E8%BD%AC?p=f&t=ykwA2bBG439pVg4a-0&fullscreen=1",
+      "figmaUrl": "https://narrow-enjoy-32280322.figma.site/sos",
       "coverImage": "/images/hera-projects/weiwei.webp",
       "description": "「那是食物，不是爱」\n\n🏆 Hackathon最佳产品奖\n\n【洞察】市面方案聚焦「控制」反而加重焦虑，WeiWei重新定位为「陪伴」\n\n【设计】90秒情感陪伴机制，用LLM构建非说教式对话系统，帮用户度过冲动高峰\n\n产品设计+开发 | 2026",
       "group": "Product",
