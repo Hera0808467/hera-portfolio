@@ -1,13 +1,15 @@
 "use client";
 
-import type { NewsletterProject } from "@/data/newsletter";
+import type { NewsletterProject, PersonBoardData } from "@/data/newsletter";
 import { TiltedMedia } from "@/components/TiltedMedia";
+import { BoardMedia } from "@/components/BoardMedia";
+import { PersonBoard } from "@/components/board/PersonBoard";
 import { motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { siteConfig } from "@/data/siteConfig";
 
 type ProjectSectionProps = {
-  project: NewsletterProject;
+  project: NewsletterProject & { personData?: PersonBoardData };
   index: number;
   isActive: boolean;
 };
@@ -131,7 +133,14 @@ export function ProjectSection({ project, index, isActive }: ProjectSectionProps
   }, [rawTitle]);
   const href = project.figmaUrl?.trim();
 
-  const media = (
+  const media = project.personData ? (
+    <PersonBoard data={project.personData} isActive={isActive} />
+  ) : (
+    <BoardMedia project={project} isActive={isActive} />
+  );
+
+  // 原始大封面（暂不用，保留以便回退）
+  const _legacyMedia = (
     <TiltedMedia
       imageSrc={project.coverImage}
       videoUrl={project.videoUrl}
@@ -146,6 +155,7 @@ export function ProjectSection({ project, index, isActive }: ProjectSectionProps
       backgroundColor={!project.coverImage && project.themeColor ? project.themeColor : undefined}
     />
   );
+  void _legacyMedia;
 
   return (
     <div className="w-full min-h-screen relative">

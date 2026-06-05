@@ -10,9 +10,11 @@ import { EndingSection } from "@/components/EndingSection";
 import { GroupNav } from "@/components/GroupNav";
 import { HeroSection } from "@/components/HeroSection";
 import { ProjectSection } from "@/components/ProjectSection";
+import { ViewTabs } from "@/components/ViewTabs";
+import { StarMap } from "@/components/StarMap";
 import type { HSV } from "@/lib/imageColor";
 import { getImageHSV } from "@/lib/imageColor";
-import { newsletterData } from "@/data/newsletter";
+import { newsletterData, buildPersonSections } from "@/data/newsletter";
 import { siteConfig } from "@/data/siteConfig";
 
 type MonthGroup = {
@@ -49,22 +51,24 @@ function groupByMonth(data: typeof newsletterData): MonthGroup[] {
 export default function HomePage() {
   const monthGroups = useMemo(() => groupByMonth(newsletterData), []);
   const current = monthGroups[0];
+  // 同形适配：每个"人"伪装成一个"项目"section。page 遍历逻辑零改动。
+  const personSections = useMemo(() => buildPersonSections(), []);
 
   const rootRef = useRef<HTMLDivElement>(null);
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const activeSectionIndexRef = useRef(0);
   const [bgReady, setBgReady] = useState(false);
   const [loadingVisible, setLoadingVisible] = useState(true);
+  const [viewMode, setViewMode] = useState<"people" | "map">("people");
 
-  const totalSections = (current?.projects.length ?? 0) + 2;
+  const totalSections = personSections.length + 2;
 
   const groups = useMemo(() => {
-    if (!current) return [];
-    return current.projects.map((p, idx) => ({
+    return personSections.map((p, idx) => ({
       name: p.displayTitle?.trim() || p.title,
       firstProjectIndex: idx
     }));
-  }, [current]);
+  }, [personSections]);
 
   const [coverHsv, setCoverHsv] = useState<HSV | null>(null);
   const lastThemeRef = useRef({ baseHue: 0.5, saturation: 0.6, originalMix: 0 });
@@ -201,7 +205,7 @@ export default function HomePage() {
     if (activeSectionIndex === 0 || activeSectionIndex === totalSections - 1) return;
 
     const projectIndex = activeSectionIndex - 1;
-    const coverImage = current?.projects[projectIndex]?.coverImage;
+    const coverImage = personSections[projectIndex]?.coverImage;
     if (!coverImage) return;
 
     let cancelled = false;
@@ -273,25 +277,34 @@ export default function HomePage() {
         />
       </div>
 
-      <div className="relative w-full">
-        <section className="h-screen w-full snap-start snap-always">
-          <HeroSection
-            currentMonth={current.month}
-            welcomeText={current.welcomeText}
-            isActive={activeSectionIndex === 0}
-          />
-        </section>
+      <ViewTabs mode={viewMode} onChange={setViewMode} />
 
-        {current.projects.map((project, idx) => (
-          <section key={project.id} className="min-h-screen w-full snap-start">
-            <ProjectSection project={project} index={idx} isActive={activeSectionIndex === idx + 1} />
+      {viewMode === "people" ? (
+        <div className="relative w-full">
+          <section className="h-screen w-full snap-start snap-always">
+            <HeroSection
+              currentMonth={current.month}
+              welcomeText={current.welcomeText}
+              isActive={activeSectionIndex === 0}
+            />
           </section>
-        ))}
 
-        <section className="h-screen w-full snap-start snap-always">
-          <EndingSection endingText={current.endingText} />
-        </section>
-      </div>
+          {personSections.map((project, idx) => (
+            <section key={project.id} className="min-h-screen w-full snap-start">
+              <ProjectSection project={project} index={idx} isActive={activeSectionIndex === idx + 1} />
+            </section>
+          ))}
+
+          <section className="h-screen w-full snap-start snap-always">
+            <EndingSection endingText={current.endingText} />
+          </section>
+        </div>
+      ) : (
+        // 聚合星图：普通滚动 div（无 section）→ 磁吸 effect 的 querySelectorAll("section") 返回 0，自动 no-op
+        <div className="relative z-10 w-full max-w-[1180px] mx-auto px-6 sm:px-10 lg:px-14 pt-28 pb-32">
+          <StarMap />
+        </div>
+      )}
 
       {isHeroOrEnding && activeSectionIndex === totalSections - 1 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
@@ -310,7 +323,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {showGroupNav && (
+      {showGroupNav && viewMode === "people" && (
         <GroupNav
           groups={groups}
           activeSectionIndex={activeSectionIndex}
@@ -345,7 +358,7 @@ export default function HomePage() {
               top.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            <CircularText text="HERA*PORTFOLIO*" spinDuration={25} onHover="slowDown" />
+            <CircularText text="MACARON*GENUI*" spinDuration={25} onHover="slowDown" />
           </motion.div>
         )}
       </AnimatePresence>

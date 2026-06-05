@@ -49,18 +49,18 @@ export type SiteConfig = {
 export const siteConfig: SiteConfig = {
   metadata: {
     title: "Hera's Portfolio",
-    description: "AI Product Manager passionate about building products that truly matter."
+    description: "Macaron genUI / Dynamic UI 团队动态日报。"
   },
 
   brand: {
-    name: "Hera's Portfolio",
-    loadingSubtitle: "Welcome",
-    tagline: "BUILDING AI PRODUCTS THAT MATTER"
+    name: "Dynamic Report",
+    loadingSubtitle: "Macaron genUI",
+    tagline: "MACARON · GENUI TEAM · 动态日报"
   },
 
   contact: {
-    email: "https://bonjour.bio/hera",
-    label: "Get in touch"
+    email: "https://neocloud.feishu.cn/docx/Gf84dVLppoS6dGxFPbncMWDsnDo",
+    label: "查看 Roadmap"
   },
 
   navigation: {
