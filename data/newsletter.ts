@@ -52,7 +52,7 @@ export const newsletterData: NewsletterData = {
   month: "2026-6",
   displayMonth: "JUN 2026",
   welcomeText:
-    "🎉 欢迎来到 Macaron genUI / Dynamic UI 团队动态日报。\n\n每一张卡片都是团队真实的产出。往下滚 👇",
+    "🎉 欢迎来到 Macaron genUI / Dynamic UI 团队动态日报。\n\n往下滚 👇",
   endingText:
     "感谢浏览 Macaron genUI 团队的进展。\n\n能力定义 × 场景探索 × 评估验证，闭环上升。\n\nMacaron genUI Team ♥️",
   projects: [
@@ -215,8 +215,8 @@ export const newsletterData: NewsletterData = {
       displayTitle: "双月 Roadmap",
       contributorType: "designers",
       contributors: ["Hera", "庄毅辉"],
-      figmaUrl: "https://neocloud.feishu.cn/docx/Gf84dVLppoS6dGxFPbncMWDsnDo",
-      coverImage: "",
+      figmaUrl: "https://neocloud.feishu.cn/docx/QSzSdgjSuowXxYxJxCkcdJUknfg",
+      coverImage: "/images/macaron/roadmap.png",
       description:
         "以「生成质量」为核心的闭环\n\n探索翼（往哪走）→ 质量主轴（什么算好 · 怎么更好）→ 验证翼（好没好 · 符不符 taste）→ 喂回。\n\n【分工】庄毅辉 = 技术 owner（能做到什么）；Hera = 质量 / 产品 owner（什么是好、往哪做、好没好）。\n\n→ 点击查看完整 Roadmap 飞书文档\n\nO2KR1 + O2KR3 + O3KR2",
       group: "评估验证",
@@ -281,38 +281,55 @@ export const newsletterData: NewsletterData = {
       metrics: [{ label: "跨模型行为对齐", value: 1, prefix: "✦" }],
     },
     {
-      id: "eval-collab",
+      id: "align-goals",
       month: "2026-6",
-      title: "Eval 体系协同",
-      displayTitle: "Eval 协同",
-      contributorType: "researchers",
-      contributors: ["李天琛"],
-      figmaUrl: "https://neocloud.feishu.cn/docx/Gf84dVLppoS6dGxFPbncMWDsnDo",
-      coverImage: "",
-      description: "与 Hera 协同建 Dynamic UI Eval 体系。",
-      group: "评估验证",
-      status: "progress",
-      themeColor: "#3AA6FF",
-      flipHeadline: "效果为先，不考虑成本",
-      bullets: ["协同定义评估维度与 rubric", "接 A2UI，每个 case 都过一遍 Eval", "by-case 反馈动态校准 rubric"],
-      metrics: [{ label: "评估维度", value: 3, suffix: " 维" }],
-    },
-    {
-      id: "benchmark",
-      month: "2026-6",
-      title: "benchmark 来源探索",
-      displayTitle: "benchmark 探索",
+      title: "对齐双月目标",
+      displayTitle: "对齐双月目标",
       contributorType: "researchers",
       contributors: ["李天琛"],
       figmaUrl: "#",
       coverImage: "",
-      description: "蒸馏竞品 PPT 网站 prompt 当 benchmark。",
-      group: "评估验证",
-      status: "observe",
+      description: "跟帅帅、yuhan 对齐双月目标。",
+      group: "能力定义",
+      status: "done",
       themeColor: "#3AA6FF",
-      flipHeadline: "把竞品 prompt 当 benchmark",
-      bullets: ["下载竞品 PPT / 前端 skill prompt", "把「做某主题 PPT」当 case 进 CI", "未来甚至合作做 import 目录"],
-      metrics: [{ label: "benchmark 来源", value: 1, prefix: "✦" }],
+      flipHeadline: "跟帅帅、yuhan 对齐双月目标",
+      bullets: ["跟帅帅、yuhan 对齐双月目标", "明确各自方向与协作边界"],
+      metrics: [{ label: "目标对齐", value: 1, prefix: "✦" }],
+    },
+    {
+      id: "trace-export",
+      month: "2026-6",
+      title: "Trace 导出流程",
+      displayTitle: "Trace 导出流程",
+      contributorType: "researchers",
+      contributors: ["李天琛"],
+      figmaUrl: "#",
+      coverImage: "",
+      description: "Trace 导出流程跑通，识别不同后端表中的重要信息。",
+      group: "评估验证",
+      status: "done",
+      themeColor: "#3AA6FF",
+      flipHeadline: "Trace 导出流程跑通",
+      bullets: ["Trace 导出流程跑通", "识别不同后端表中的重要信息", "做了一个 trace 导出脚本"],
+      metrics: [{ label: "Trace 导出", value: 1, prefix: "✦" }],
+    },
+    {
+      id: "memory-eval",
+      month: "2026-6",
+      title: "memory 评估平台",
+      displayTitle: "memory 评估平台",
+      contributorType: "researchers",
+      contributors: ["李天琛"],
+      figmaUrl: "https://bidder-visits-wyoming-somewhere.trycloudflare.com/",
+      coverImage: "",
+      description: "学习 openai 的 memory 评估，搭建 memory 评估平台。",
+      group: "评估验证",
+      status: "progress",
+      themeColor: "#3AA6FF",
+      flipHeadline: "学习 openai 的 memory 评估",
+      bullets: ["搭建 memory 评估平台", "学习 openai 的 memory 评估", "已可在后端导入线上用户数据并抽取记忆"],
+      metrics: [{ label: "memory 评估平台", value: 1, prefix: "✦" }],
     },
   ],
 };
@@ -332,10 +349,14 @@ export type Person = {
   date?: string;
   /** 喂给 shader HSV 变色的代表图。 */
   coverRef?: string;
+  /** 白板内嵌的配图（如 Roadmap 图）。 */
+  boardImage?: string;
+  /** 整卡点击跳转的文档链接。 */
+  docUrl?: string;
 };
 
 export const people: Person[] = [
-  { id: "Hera", name: "冯欢 Hera", role: "genUI 质量 / 产品 Owner", color: "#9A78FF", avatar: "🍡", date: "6 月 5 日 · 周五", coverRef: "/images/macaron/tarot-card.png", summary: "渐进式披露、Eval 体系、多模型对比、5 张 persona 卡——围绕生成质量定标准、推迭代、做验证。" },
+  { id: "Hera", name: "冯欢 Hera", role: "genUI 质量 / 产品 Owner", color: "#9A78FF", avatar: "/images/macaron/hera-avatar.png", date: "6 月 5 日 · 周五", coverRef: "/images/macaron/tarot-card.png", boardImage: "/images/macaron/roadmap.png", docUrl: "https://neocloud.feishu.cn/docx/QSzSdgjSuowXxYxJxCkcdJUknfg", summary: "渐进式披露、Eval 体系、多模型对比、5 张 persona 卡——围绕生成质量定标准、推迭代、做验证。" },
   { id: "庄毅辉", name: "庄毅辉", role: "genUI 技术 Owner · 引擎核心", color: "#37C8C2", avatar: "🛠️", date: "6 月 5 日 · 周五", coverRef: "/images/macaron/mbti-card.png", summary: "component / example 机制、流式生成、自动修复、genUI in markdown 探索。" },
   { id: "李天琛", name: "李天琛", role: "Eval / 质量", color: "#3AA6FF", avatar: "📊", date: "6 月 5 日 · 周五", coverRef: "/images/macaron/moon-card.png", summary: "评估体系协同，benchmark 方向。" },
 ];

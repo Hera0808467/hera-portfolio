@@ -290,14 +290,12 @@ export function PersonBoardV3({ data, isActive }: { data: PersonBoardData; isAct
         ))}
       </div>
 
-      {/* 金句：meta */}
+      {/* 状态条 */}
       <div className="relative flex-none text-center" style={{ fontSize: 10, color: "#7c7490", marginTop: "clamp(7px,1vw,12px)", fontFamily: MONO }}>
         {generating ? (
           <span style={{ color: "#a78bfa" }}>▍ streaming card {doneCount}/{total} …</span>
         ) : (
-          <span>
-            由 <b style={{ color: "#cabffe" }}>Dynamic UI</b> 实时生成 · <i style={{ color: "#9a92ad" }}>这张卡本身就是它的产物</i>
-          </span>
+          <span style={{ color: "#7c7490" }}>✓ rendered · {total} items</span>
         )}
       </div>
     </div>

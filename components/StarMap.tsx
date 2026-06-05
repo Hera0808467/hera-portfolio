@@ -134,7 +134,7 @@ export function StarMap() {
       <div className="relative mt-6 mx-auto" style={{ width: "100%", maxWidth: SW, aspectRatio: `${SW}/${SH}`, borderRadius: 26, background: "radial-gradient(120% 120% at 30% 20%,rgba(255,255,255,.03),transparent 55%)", border: "1px solid rgba(255,255,255,.06)", overflow: "hidden" }}>
         {/* 星尘 */}
         {stars.current.map((s, i) => (
-          <span key={i} style={{ position: "absolute", left: `${s.x}%`, top: `${s.y}%`, width: s.s, height: s.s, borderRadius: 99, background: "#fff", animation: `smTwinkle 4s ease-in-out infinite`, animationDelay: `${s.d}s` }} />
+          <span key={i} style={{ position: "absolute", left: `${s.x}%`, top: `${s.y}%`, width: s.s, height: s.s, borderRadius: 99, background: "#fff", animation: `smTwinkle 4s ease-in-out ${s.d}s infinite` }} />
         ))}
 
         {/* SVG 连线 */}
@@ -173,7 +173,7 @@ export function StarMap() {
           const dim = filter !== "all" && filter !== n.t;
           const t = typed[i] ?? "";
           return (
-            <div key={i} style={{ position: "absolute", left: `${(n.x / SW) * 100}%`, top: `${(n.y / SH) * 100}%`, transform: lit ? "translate(-50%,-50%) scale(1)" : "translate(-50%,-50%) scale(.3)", opacity: lit ? (dim ? 0.12 : 1) : 0, transition: "opacity .6s, transform .6s cubic-bezier(.2,.9,.3,1.2), filter .4s", filter: dim ? "grayscale(.6) blur(1px)" : "none", color, animation: floating && !dim ? `smFloaty ${(6 + (i % 3)).toFixed(1)}s ease-in-out infinite` : "none", animationDelay: `${(i % 4) * -1.2}s` }}>
+            <div key={i} style={{ position: "absolute", left: `${(n.x / SW) * 100}%`, top: `${(n.y / SH) * 100}%`, transform: lit ? "translate(-50%,-50%) scale(1)" : "translate(-50%,-50%) scale(.3)", opacity: lit ? (dim ? 0.12 : 1) : 0, transition: "opacity .6s, transform .6s cubic-bezier(.2,.9,.3,1.2), filter .4s", filter: dim ? "grayscale(.6) blur(1px)" : "none", color, animation: floating && !dim ? `smFloaty ${(6 + (i % 3)).toFixed(1)}s ease-in-out ${((i % 4) * -1.2).toFixed(1)}s infinite` : "none" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 11, padding: "11px 16px 11px 13px", borderRadius: 14, maxWidth: 280, background: "rgba(20,20,26,.55)", border: "1px solid rgba(255,255,255,.10)", backdropFilter: "blur(16px)", boxShadow: "0 14px 40px rgba(0,0,0,.5)" }}>
                 <span style={{ flex: "0 0 auto", width: 11, height: 11, borderRadius: 99, background: "currentColor", animation: "smPulse 3.4s ease-in-out infinite" }} />
                 <div style={{ minWidth: 0 }}>

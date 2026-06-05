@@ -43,7 +43,8 @@ export function PersonBoardV1({ data, isActive }: { data: PersonBoardData; isAct
     <figure
       ref={figureRef}
       className="relative w-full"
-      style={{ perspective: "1100px", margin: 0 }}
+      style={{ perspective: "1100px", margin: 0, cursor: person.docUrl ? "pointer" : "default" }}
+      onClick={() => { if (person.docUrl) window.open(person.docUrl, "_blank", "noopener"); }}
       onMouseMove={(ev) => {
         const root = figureRef.current;
         if (!root) return;
@@ -74,8 +75,12 @@ export function PersonBoardV1({ data, isActive }: { data: PersonBoardData; isAct
     >
       {/* header */}
       <div className="flex items-center gap-3 flex-none" style={{ marginBottom: "clamp(10px,1.6vw,18px)" }}>
-        <div className="grid place-items-center flex-none" style={{ width: 44, height: 44, borderRadius: 14, fontSize: 22, background: `linear-gradient(135deg, ${person.color}55, ${person.color}22)`, boxShadow: "0 6px 18px rgba(140,110,180,0.10)" }}>
-          {person.avatar ?? "🙂"}
+        <div className="grid place-items-center flex-none overflow-hidden" style={{ width: 44, height: 44, borderRadius: 14, fontSize: 22, background: `linear-gradient(135deg, ${person.color}55, ${person.color}22)`, boxShadow: "0 6px 18px rgba(140,110,180,0.10)" }}>
+          {person.avatar?.startsWith("/") ? (
+            <img src={person.avatar} alt={person.name} className="w-full h-full" style={{ objectFit: "cover" }} />
+          ) : (
+            person.avatar ?? "🙂"
+          )}
         </div>
         <div>
           <div style={{ fontSize: "clamp(15px,1.7vw,19px)", fontWeight: 800, letterSpacing: "0.2px" }}>{person.name} 的日报</div>
@@ -91,47 +96,75 @@ export function PersonBoardV1({ data, isActive }: { data: PersonBoardData; isAct
         </div>
       </div>
 
-      {/* 两栏业务线 */}
-      <div className="grid gap-3 flex-1 min-h-0" style={{ gridTemplateColumns: byGroup.length > 1 ? "1fr 1fr" : "1fr" }}>
-        {byGroup.slice(0, 2).map((g, gi) => (
-          <div key={g.group} className="flex flex-col overflow-hidden" style={{ background: "#fff", borderRadius: 16, padding: "clamp(11px,1.5vw,16px)", boxShadow: "0 6px 18px rgba(140,110,180,0.08)" }}>
-            <div className="flex items-center gap-2 flex-none" style={{ marginBottom: 9 }}>
-              <span style={{ width: 8, height: 8, borderRadius: 99, background: gi === 0 ? "#7b5cff" : "#ff7a59" }} />
-              <b style={{ fontSize: "clamp(12px,1.4vw,15px)", fontWeight: 800 }}>{g.group}</b>
-              <span className="ml-auto" style={{ fontSize: 11, fontWeight: 700, color: "#a89bb8" }}>{g.projects.length} 项</span>
-            </div>
-            <div className="flex flex-col overflow-hidden">
-              {g.projects.map((p: NewsletterProject) => {
-                rowIdx += 1;
-                const myIdx = rowIdx;
-                const show = isActive ? myIdx < revealed : true;
-                const st = STATUS_META[p.status ?? "progress"];
-                const clickable = p.figmaUrl && p.figmaUrl !== "#";
-                const Inner = (
-                  <div className="flex gap-2.5" style={{ padding: "8px 0", borderTop: myIdx === 0 || g.projects[0] === p ? "none" : "1px solid #f4eef8", opacity: show ? 1 : 0, transform: show ? "none" : "translateY(6px)", transition: "opacity .35s, transform .35s" }}>
-                    <div className="grid place-items-center flex-none" style={{ width: 22, height: 22, borderRadius: 7, fontSize: 11, fontWeight: 800, color: "#fff", background: st.bg, marginTop: 1 }}>{st.icon}</div>
-                    <div className="flex-1 min-w-0">
-                      <div style={{ fontSize: "clamp(11.5px,1.25vw,13.5px)", fontWeight: 700, lineHeight: 1.35 }}>{p.displayTitle || p.title}</div>
-                      <div style={{ fontSize: "clamp(10.5px,1.1vw,11.5px)", color: "#8a8294", marginTop: 3, lineHeight: 1.45, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{p.flipHeadline || p.description.split("\n")[0]}</div>
-                      <span style={{ display: "inline-block", fontSize: 9.5, fontWeight: 700, borderRadius: 20, padding: "2px 8px", marginTop: 5, color: st.pill, background: st.pillBg }}>{st.label}{clickable ? " · 查看 ›" : ""}</span>
+      {/* 主体：有配图 → 左要点 + 右配图；无配图 → 两栏业务线 */}
+      {person.boardImage ? (
+        <div className="grid gap-3 flex-1 min-h-0" style={{ gridTemplateColumns: "1fr 1.15fr" }}>
+          {/* 左：业务线要点（紧凑单列） */}
+          <div className="flex flex-col gap-2.5 overflow-hidden">
+            {byGroup.map((g, gi) => (
+              <div key={g.group} className="flex flex-col overflow-hidden" style={{ background: "#fff", borderRadius: 14, padding: "10px 13px", boxShadow: "0 6px 18px rgba(140,110,180,0.08)" }}>
+                <div className="flex items-center gap-2 flex-none" style={{ marginBottom: 6 }}>
+                  <span style={{ width: 7, height: 7, borderRadius: 99, background: gi === 0 ? "#7b5cff" : gi === 1 ? "#ff7a59" : "#5fb89a" }} />
+                  <b style={{ fontSize: "clamp(11px,1.3vw,13px)", fontWeight: 800 }}>{g.group}</b>
+                  <span className="ml-auto" style={{ fontSize: 10.5, fontWeight: 700, color: "#a89bb8" }}>{g.projects.length} 项</span>
+                </div>
+                {g.projects.map((p: NewsletterProject) => {
+                  rowIdx += 1;
+                  const myIdx = rowIdx;
+                  const show = isActive ? myIdx < revealed : true;
+                  const st = STATUS_META[p.status ?? "progress"];
+                  return (
+                    <div key={p.id} className="flex items-center gap-2" style={{ padding: "3px 0", opacity: show ? 1 : 0, transform: show ? "none" : "translateY(6px)", transition: "opacity .35s, transform .35s" }}>
+                      <div className="grid place-items-center flex-none" style={{ width: 16, height: 16, borderRadius: 5, fontSize: 9, fontWeight: 800, color: "#fff", background: st.bg }}>{st.icon}</div>
+                      <div style={{ fontSize: "clamp(10.5px,1.15vw,12.5px)", fontWeight: 600, lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.displayTitle || p.title}</div>
                     </div>
-                  </div>
-                );
-                return clickable ? (
-                  <a key={p.id} href={p.figmaUrl} target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">{Inner}</a>
-                ) : (
-                  <div key={p.id}>{Inner}</div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* 金句 */}
-      <div className="flex-none text-center" style={{ fontSize: 10.5, color: "#a89bb8", marginTop: "clamp(8px,1.2vw,14px)" }}>
-        由 <b style={{ color: "#8a8294" }}>Dynamic UI</b> 实时生成 · 这张卡本身就是它的产物
-      </div>
+          {/* 右：Roadmap 配图 */}
+          <div className="relative overflow-hidden flex flex-col" style={{ background: "#fff", borderRadius: 14, padding: 8, boxShadow: "0 6px 18px rgba(140,110,180,0.08)" }}>
+            <img src={person.boardImage} alt="Roadmap" className="w-full h-full" style={{ objectFit: "contain", borderRadius: 8 }} />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3 flex-1 min-h-0 overflow-auto">
+          {byGroup.map((g, gi) => (
+            <div key={g.group} className="flex flex-col overflow-hidden" style={{ background: "#fff", borderRadius: 16, padding: "clamp(11px,1.5vw,16px)", boxShadow: "0 6px 18px rgba(140,110,180,0.08)" }}>
+              <div className="flex items-center gap-2 flex-none" style={{ marginBottom: 9 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 99, background: gi === 0 ? "#7b5cff" : gi === 1 ? "#ff7a59" : "#5fb89a" }} />
+                <b style={{ fontSize: "clamp(12px,1.4vw,15px)", fontWeight: 800 }}>{g.group}</b>
+                <span className="ml-auto" style={{ fontSize: 11, fontWeight: 700, color: "#a89bb8" }}>{g.projects.length} 项</span>
+              </div>
+              <div className="flex flex-col">
+                {g.projects.map((p: NewsletterProject) => {
+                  rowIdx += 1;
+                  const myIdx = rowIdx;
+                  const show = isActive ? myIdx < revealed : true;
+                  const st = STATUS_META[p.status ?? "progress"];
+                  const clickable = p.figmaUrl && p.figmaUrl !== "#";
+                  const Inner = (
+                    <div className="flex gap-2.5" style={{ padding: "8px 0", borderTop: g.projects[0] === p ? "none" : "1px solid #f4eef8", opacity: show ? 1 : 0, transform: show ? "none" : "translateY(6px)", transition: "opacity .35s, transform .35s" }}>
+                      <div className="grid place-items-center flex-none" style={{ width: 22, height: 22, borderRadius: 7, fontSize: 11, fontWeight: 800, color: "#fff", background: st.bg, marginTop: 1 }}>{st.icon}</div>
+                      <div className="flex-1 min-w-0">
+                        <div style={{ fontSize: "clamp(11.5px,1.25vw,13.5px)", fontWeight: 700, lineHeight: 1.35 }}>{p.displayTitle || p.title}</div>
+                        <div style={{ fontSize: "clamp(10.5px,1.1vw,11.5px)", color: "#8a8294", marginTop: 3, lineHeight: 1.45, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{p.flipHeadline || p.description.split("\n")[0]}</div>
+                        <span style={{ display: "inline-block", fontSize: 9.5, fontWeight: 700, borderRadius: 20, padding: "2px 8px", marginTop: 5, color: st.pill, background: st.pillBg }}>{st.label}{clickable ? " · 查看 ›" : ""}</span>
+                      </div>
+                    </div>
+                  );
+                  return clickable ? (
+                    <a key={p.id} href={p.figmaUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="block hover:opacity-80 transition-opacity">{Inner}</a>
+                  ) : (
+                    <div key={p.id}>{Inner}</div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
     </figure>
   );

@@ -143,11 +143,6 @@ export function PersonBoardV2({ data, isActive }: { data: PersonBoardData; isAct
           </div>
         ))}
       </div>
-
-      {/* 底部金句 */}
-      <div className="relative flex-none text-center" style={{ fontSize: 10.5, color: "rgba(243,241,246,0.42)", marginTop: "clamp(8px,1.2vw,14px)" }}>
-        由 <b style={{ color: accent }}>Dynamic UI</b> 实时生成 · 这张卡本身就是它的产物
-      </div>
     </div>
   );
 }
